@@ -1,27 +1,33 @@
 pipeline {
-  agent any  
-
+  agent any
   stages {
-    stage('Build') {   // This stage builds the project
-      steps {
-        build 'PES2UG21CS395-1'  // This step builds the project using the build command
-        sh 'g++ main.cpp -o output'  // This step compiles the source code using the g++ compiler
-      }
-    }
-    stage('Test') {  // This stage tests the project
-      steps {
-        sh './output'  // This step runs the output binary
-      }
-    }
-    stage('Deploy') {  // This stage deploys the project
-      steps {
-        echo 'deploy'  // This step prints a message to the console
-      }
+    // stage('Clone repository') {
+    //   steps {
+    //     checkout([$class:'GitSCM',
+    //     branches: [[name: '*/main']],
+    //     userRemoteConfigs :[[url:'https://github.com/KushShriv/PES2UG21CS917_Jenkins.git']]])
+    //   }
+    // }
+  stage('Build') {
+    steps {
+      build 'PES2UG21CS395-1'
+      sh 'g++ main.cpp -o output'
     }
   }
-  post {  // This section defines a post-build block
-    failure {  // This block will be executed if the pipeline fails
-      error 'Pipeline failed'  // This step prints an error message to the console
+  stage('Test') {
+    steps {
+      sh './output'
+    }
+  }
+  stage('Deploy') {
+    steps {
+      echo 'deploy'
+    }
+  }
+  }
+  post{
+    failure{
+      error 'Pipeline failed'
     }
   }
 }
